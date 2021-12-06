@@ -41,6 +41,9 @@ class AnimatedBottomNavigationBar extends StatefulWidget {
   /// Optional custom notch margin for Floating. Default is 8.
   final double? notchMargin;
 
+  /// Optional automatic notch. Default is false.
+  final bool? notchAutomatic;
+
   /// Optional custom maximum spread radius for splash selection animation. Default is 24.
   final double splashRadius;
 
@@ -92,6 +95,7 @@ class AnimatedBottomNavigationBar extends StatefulWidget {
     this.splashRadius = 24,
     this.splashSpeedInMilliseconds,
     this.notchMargin,
+    this.notchAutomatic = false,
     this.backgroundColor,
     this.splashColor,
     this.activeColor,
@@ -272,14 +276,7 @@ class _AnimatedBottomNavigationBarState
       elevation: widget.elevation ?? 8,
       color: Colors.transparent,
       clipper: CircularNotchedAndCorneredRectangleClipper(
-        shape: CircularNotchedAndCorneredRectangle(
-          animation: widget.notchAndCornersAnimation,
-          notchSmoothness:
-              widget.notchSmoothness ?? NotchSmoothness.defaultEdge,
-          gapLocation: widget.gapLocation ?? GapLocation.end,
-          leftCornerRadius: widget.leftCornerRadius ?? 0.0,
-          rightCornerRadius: widget.rightCornerRadius ?? 0.0,
-        ),
+        shape: notchShape(widget.notchAutomatic!),
         geometry: geometryListenable,
         notchMargin: widget.notchMargin ?? 8,
       ),
@@ -298,6 +295,28 @@ class _AnimatedBottomNavigationBarState
         ),
       ),
     );
+  }
+
+
+  NotchedShape notchShape(bool automatic){
+    if(automatic){
+      return AutomaticNotchedShape(
+          RoundedRectangleBorder(
+          ),
+          BeveledRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(70))
+          )
+      );
+    }else{
+      return CircularNotchedAndCorneredRectangle(
+        animation: widget.notchAndCornersAnimation,
+        notchSmoothness:
+        widget.notchSmoothness ?? NotchSmoothness.defaultEdge,
+        gapLocation: widget.gapLocation ?? GapLocation.end,
+        leftCornerRadius: widget.leftCornerRadius ?? 0.0,
+        rightCornerRadius: widget.rightCornerRadius ?? 0.0,
+      );
+    }
   }
 
   List<Widget> _buildItems() {
