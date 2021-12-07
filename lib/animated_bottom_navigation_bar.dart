@@ -182,7 +182,7 @@ class AnimatedBottomNavigationBar extends StatefulWidget {
     double? splashRadius,
     int? splashSpeedInMilliseconds,
     double? notchMargin,
-    bool? notchAutomatic,
+    NotchedShape? notchedShape,
     Color? backgroundColor,
     Color? splashColor,
     Animation<double>? notchAndCornersAnimation,
