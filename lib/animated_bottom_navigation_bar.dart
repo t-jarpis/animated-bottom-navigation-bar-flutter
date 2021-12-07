@@ -41,8 +41,8 @@ class AnimatedBottomNavigationBar extends StatefulWidget {
   /// Optional custom notch margin for Floating. Default is 8.
   final double? notchMargin;
 
-  /// Optional automatic notch. Default is false.
-  final bool? notchAutomatic;
+  /// Optional custom notch shape.
+  final NotchedShape? notchedShape;
 
   /// Optional custom maximum spread radius for splash selection animation. Default is 24.
   final double splashRadius;
@@ -95,7 +95,7 @@ class AnimatedBottomNavigationBar extends StatefulWidget {
     this.splashRadius = 24,
     this.splashSpeedInMilliseconds,
     this.notchMargin,
-    this.notchAutomatic = false,
+    this.notchedShape,
     this.backgroundColor,
     this.splashColor,
     this.activeColor,
@@ -135,7 +135,7 @@ class AnimatedBottomNavigationBar extends StatefulWidget {
     double? splashRadius,
     int? splashSpeedInMilliseconds,
     double? notchMargin,
-    bool? notchAutomatic,
+    NotchedShape? notchedShape,
     Color? backgroundColor,
     Color? splashColor,
     Color? activeColor,
@@ -157,7 +157,7 @@ class AnimatedBottomNavigationBar extends StatefulWidget {
           splashRadius: splashRadius ?? 24,
           splashSpeedInMilliseconds: splashSpeedInMilliseconds,
           notchMargin: notchMargin,
-          notchAutomatic:notchAutomatic,
+    NotchedShape? notchedShape,
           backgroundColor: backgroundColor,
           splashColor: splashColor,
           activeColor: activeColor,
@@ -202,7 +202,7 @@ class AnimatedBottomNavigationBar extends StatefulWidget {
           splashRadius: splashRadius ?? 24,
           splashSpeedInMilliseconds: splashSpeedInMilliseconds,
           notchMargin: notchMargin,
-          notchAutomatic:notchAutomatic,
+          NotchedShape? notchedShape,
           backgroundColor: backgroundColor,
           splashColor: splashColor,
           notchAndCornersAnimation: notchAndCornersAnimation,
@@ -280,7 +280,7 @@ class _AnimatedBottomNavigationBarState
       elevation: widget.elevation ?? 8,
       color: Colors.transparent,
       clipper: CircularNotchedAndCorneredRectangleClipper(
-        shape: notchShape(widget.notchAutomatic!),
+        shape: notchShape(widget.notchedShape),
         geometry: geometryListenable,
         notchMargin: widget.notchMargin ?? 8,
       ),
@@ -302,15 +302,9 @@ class _AnimatedBottomNavigationBarState
   }
 
 
-  NotchedShape notchShape(bool automatic){
-    if(automatic){
-      return AutomaticNotchedShape(
-          RoundedRectangleBorder(
-          ),
-          BeveledRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(70))
-          )
-      );
+  NotchedShape notchShape(NotchedShape? notchedShape){
+    if(notchedShape != null){
+      return notchedShape;
     }else{
       return CircularNotchedAndCorneredRectangle(
         animation: widget.notchAndCornersAnimation,
